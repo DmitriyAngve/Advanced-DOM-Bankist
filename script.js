@@ -74,6 +74,33 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   }
 });
 
+// Tabbed component
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+// Use event delegation
+tabsContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab'); // DOM traversing (with .closest(".operations__tab") we may click the button and receive the button, not the span)
+  // console.log(clicked); // like this we can click not only a button, but on span (we need to rid data-tab attribute, but still need the button)
+
+  // Guard clause (ignore any other click)
+  if (!clicked) return; // if click returns "null" (falsy value), nothing happens, if truthy value - go on
+
+  // Deactivate tab (remove active classes)
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  tabsContent.forEach(c => c.classList.remove('operations__content--active'));
+
+  // Activate tab
+  clicked.classList.add('operations__tab--active');
+
+  // Activate content area
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+
+  // Same idea as MODAL window (add and remove classList properties)
+});
 //
 
 //
@@ -281,5 +308,36 @@ document.querySelector('.nav').addEventListener(
 ); // If we click here - NAV
 */
 ////////////////////////////////////////////////////////////////////////
-///////////////Event Delegation: Implementing Page Navigation///////////
+///////////////////////////DOM Traversing///////////////////////////////
 ////////////////////////////////////////////////////////////////////////
+/*
+// Selecting h1
+const h1 = document.querySelector('h1');
+
+// Going downwards: child
+console.log(h1.querySelectorAll('.highlight')); // no matter how deep these child element would be inside of the h1 element
+console.log(h1.childNodes); // Nodes can be anything: texts, comments, elements...
+console.log(h1.children);
+h1.firstElementChild.style.color = 'white'; // first child of all children
+h1.lastElementChild.style.color = 'orangered'; // last child of all children
+
+// Going upwards: parents
+console.log(h1.parentNode); // same as below
+console.log(h1.parentElement); // same as above (because this element is also a node in this case)
+
+h1.closest('.header').style.background = 'var(--gradient-secondary)'; // this method receives a query string (like querySelector)
+h1.closest('h1').style.background = 'var(--gradient-primary)';
+
+// Going sideways: siblings
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+
+// If we need all siblings: let's do this trick:
+console.log(h1.parentElement.children); // HTMLCollection(4) [h1, h4, button.btn--text.btn--scroll-to, img.header__img]
+[...h1.parentElement.children].forEach(function (el) {
+  if (el !== h1) el.style.transform = 'scale(0.5)';
+}); // decrease of siblings
+*/
