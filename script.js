@@ -47,7 +47,40 @@ btnScrollTo.addEventListener('click', function (e) {
   section1.scrollIntoView({ behavior: 'smooth' });
 });
 
+///////////////////////////////////////
 // Page Navigation
+
+// Not good idea
+// document.querySelectorAll('.nav__link').forEach(function (el) {
+//   el.addEventListener('click', function (e) {
+//     e.preventDefault();
+//     const id = this.getAttribute('href'); // I dont need absolute URL (cann't wright this.href)
+//     console.log(id);
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' }); // move to section with id
+//   });
+// });
+
+// 1. Add event listener to common parent element
+// 2. Determine what element originated the event
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+
+  // Matching strategy
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+//
+
+//
+
+//
+
+//
 
 // Lectures //
 ////////////////////////////////////////////////////////////////////////
