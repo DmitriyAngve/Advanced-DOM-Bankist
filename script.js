@@ -115,3 +115,21 @@ console.log(logo.getAttribute('designer')); // Dmitriy
 logo.setAttribute('company', 'Bankist'); // added attribute
 
 console.log(logo.getAttribute('src')); // img/logo.png (relative version of URL)
+
+// Work with links
+const link = document.querySelector('.twitter-link');
+console.log(link.href); // https://twitter.com/jonasschmedtman (absolute URL)
+console.log(link.getAttribute('href')); // https://twitter.com/jonasschmedtman (absolute URL)
+
+// Data attributes
+console.log(logo.dataset.versionNumber); // 3.0 (don't forget about camelCase in version) Dataset - special object
+
+// CLASSES
+// Methods way to add and remove classes based on their names without interfering with the classes that are already there
+logo.classList.add('c', 'j');
+logo.classList.remove('c', 'j');
+logo.classList.toggle('c', 'j');
+logo.classList.contains('c', 'j'); // not includes
+
+// Don't USE
+logo.className = 'jonas';
