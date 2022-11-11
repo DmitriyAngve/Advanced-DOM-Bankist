@@ -33,7 +33,7 @@ document.addEventListener('keydown', function (e) {
 ////////////////////////////////////////////////////////////////////////
 /////////////Selecting, Creating, and Deleting Elements/////////////////
 ////////////////////////////////////////////////////////////////////////
-
+/*
 // SELECTING elements
 console.log(document.documentElement);
 console.log(document.head);
@@ -132,4 +132,29 @@ logo.classList.toggle('c', 'j');
 logo.classList.contains('c', 'j'); // not includes
 
 // Don't USE
+
 logo.className = 'jonas';
+*/
+
+const btnScrollTo = document.querySelector('.btn--scroll-to'); // From
+const section1 = document.querySelector('#section--1'); // To
+
+btnScrollTo.addEventListener('click', function (e) {
+  const s1coords = section1.getBoundingClientRect();
+  console.log(s1coords); // DOMRect {x: 0, y: 544, width: 933, height: 1595.6875, top: 544, …}
+  // e.target - clicked element
+  console.log(e.target.getBoundingClientRect()); // based on vivsible viewport
+  console.log('Current scroll (X/Y)', window.pageXOffset, pageYOffset);
+
+  console.log(
+    'height/width viewport',
+    document.documentElement.clientHeight,
+    document.documentElement.clientWidth
+  );
+
+  // Scrolling
+  window.scrollTo(
+    s1coords.left + window.pageXOffset,
+    s1coords.top + window.pageYOffset
+  ); // needs to tell JS it scroll to (s1coords.top - allways relative to the view port, but not to the document)
+});
