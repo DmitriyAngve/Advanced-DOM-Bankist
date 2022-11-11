@@ -5,6 +5,7 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+const nav = document.querySelector('.nav');
 
 ///////////////////////////////////////
 // Modal window
@@ -101,6 +102,25 @@ tabsContainer.addEventListener('click', function (e) {
 
   // Same idea as MODAL window (add and remove classList properties)
 });
+
+// Menu fade animation
+const handleHover = function (e, opacity) {
+  // console.log(this, e.currentTarget);
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    // We need to select the siblings elements (basically all the other links, let's find it in nav__item (parent))
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = this; // this keyword for this example - it's opacity
+      logo.style.opacity = this;
+    });
+  }
+};
+// Passing "argument" into handler
+nav.addEventListener('mouseover', handleHover.bind(0.5)); // .bind returns a new function (no need callback function)
+nav.addEventListener('mouseout', handleHover.bind(1));
 //
 
 //
