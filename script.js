@@ -1,13 +1,13 @@
 'use strict';
-
-///////////////////////////////////////
-// Modal window
-
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
 
+///////////////////////////////////////
+// Modal window
 const openModal = function (e) {
   e.preventDefault();
   modal.classList.remove('hidden');
@@ -30,6 +30,26 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
+///////////////////////////////////////
+// Button scrolling
+btnScrollTo.addEventListener('click', function (e) {
+  const s1coords = section1.getBoundingClientRect();
+  console.log(s1coords);
+  console.log(e.target.getBoundingClientRect());
+  console.log('Current scroll (X/Y)', window.pageXOffset, pageYOffset);
+
+  console.log(
+    'height/width viewport',
+    document.documentElement.clientHeight,
+    document.documentElement.clientWidth
+  );
+
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+// Page Navigation
+
+// Lectures //
 ////////////////////////////////////////////////////////////////////////
 /////////////Selecting, Creating, and Deleting Elements/////////////////
 ////////////////////////////////////////////////////////////////////////
@@ -136,6 +156,10 @@ logo.classList.contains('c', 'j'); // not includes
 logo.className = 'jonas';
 */
 
+////////////////////////////////////////////////////////////////////////
+///////////////////////////Smooth scrolling/////////////////////////////
+////////////////////////////////////////////////////////////////////////
+/*
 const btnScrollTo = document.querySelector('.btn--scroll-to'); // From
 const section1 = document.querySelector('#section--1'); // To
 
@@ -152,9 +176,77 @@ btnScrollTo.addEventListener('click', function (e) {
     document.documentElement.clientWidth
   );
 
-  // Scrolling
-  window.scrollTo(
-    s1coords.left + window.pageXOffset,
-    s1coords.top + window.pageYOffset
-  ); // needs to tell JS it scroll to (s1coords.top - allways relative to the view port, but not to the document)
+  // // Scrolling
+  // window.scrollTo(
+  //   s1coords.left + window.pageXOffset, // current position plus the current scroll
+  //   s1coords.top + window.pageYOffset
+  // ); // needs to tell JS it scroll to (s1coords.top - allways relative to the view port, but not to the document)
+
+  // Make it better (old school version)
+  // window.scrollTo({
+  //   left: s1coords.left + window.pageXOffset,
+  //   top: s1coords.top + window.pageYOffset,
+  //   behavior: 'smooth',
+  // });
+
+  // Modern version
+  section1.scrollIntoView({ behavior: 'smooth' });
 });
+*/
+////////////////////////////////////////////////////////////////////////
+/////////////////////Types of Events and Event Handlers/////////////////
+////////////////////////////////////////////////////////////////////////
+/*
+// Mouseenter event
+const h1 = document.querySelector('h1');
+
+// MODERN way
+const alertH1 = function (e) {
+  alert('addEventListener: Great! You are reading the heading :D');
+};
+
+h1.addEventListener('mouseenter', alertH1);
+
+setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000); // Removed for only alert once window (3 sec)
+
+// Another way of  attached an EventListener to an element (directly to the element) OLDSCHOOL
+// h1.onmouseenter = function (e) {
+//   alert('onmouseenter: Great! You are reading the heading :D');
+// };
+*/
+////////////////////////////////////////////////////////////////////////
+////////////////Event Propagation: and Event Bubbling///////////////////
+////////////////////////////////////////////////////////////////////////
+/*
+// Practice: create random color (rgb (255,255,255))
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)})`;
+
+document.querySelector('.nav__link').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log('LINK', e.target, e.currentTarget); // e.target - where the event happend / e.currentTarget - on which the element handler is attached
+  console.log(e.currentTarget === this); // true
+
+  // Stop event propagation (not good idea)
+  // e.stopPropagation(); // only the element you click on react
+}); // If we click here - all 3
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log('CONTAINER', e.target, e.currentTarget);
+}); // If we click here - CONTAINER and NAV
+
+document.querySelector('.nav').addEventListener(
+  'click',
+  function (e) {
+    this.style.backgroundColor = randomColor();
+    console.log('NAV', e.target, e.currentTarget);
+  }
+  // true
+); // If we click here - NAV
+*/
+////////////////////////////////////////////////////////////////////////
+///////////////Event Delegation: Implementing Page Navigation///////////
+////////////////////////////////////////////////////////////////////////
