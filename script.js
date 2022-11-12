@@ -253,25 +253,56 @@ const btnRight = document.querySelector('.slider__btn--right');
 
 // New variable for current slide. "let" - because we update it
 let curSlide = 0;
+// Count of max slide
+const maxSlide = slides.length; // length of NodeList (in case Node list have length property)
 
 // Delete this
-const slider = document.querySelector('.slider');
-slider.style.transform = 'scale(0.2) translateX(-800px)';
-slider.style.overflow = 'visible';
+// const slider = document.querySelector('.slider');
+// slider.style.transform = 'scale(0.2) translateX(-800px)';
+// slider.style.overflow = 'visible';
 
 // Putting all the slides side-by-side, for it loop and set the style on each of them
-slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
-// first 0%, second 100%, third 200%, fourth 300%
+const goToSlide = function (slide) {
+  slides.forEach(
+    (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
+  );
+};
+// let slide argument set to 0
+goToSlide(0);
 
 // Going to the next slide
-btnRight.addEventListener('click', function () {
-  curSlide++;
+const nextSlide = function () {
+  if (curSlide === maxSlide - 1) {
+    curSlide = 0;
+  } else {
+    curSlide++;
+  }
 
-  slides.forEach(
-    (s, i) => (s.style.transform = `translateX(${100 * (i - curSlide)}%)`)
-  );
-}); // (i - curSlide) FIRST: (0 - 1 = -1), second (1-1 = 0) and etc...
+  goToSlide(curSlide);
+};
+
+const prevSlide = function () {
+  if (curSlide === 0) {
+    curSlide = maxSlide - 1;
+  } else {
+    curSlide--;
+  }
+  goToSlide(curSlide);
+};
+
+// (i - curSlide) FIRST: (0 - 1 = -1), second (1 - 1 = 0) and etc...
 // curSlide = 1: -100%, 0%, 100%, 200%
+btnRight.addEventListener('click', nextSlide);
+btnLeft.addEventListener('click', prevSlide);
+
+//
+//
+//
+//
+//
+//
+//
+//
 //
 
 // Lectures //
