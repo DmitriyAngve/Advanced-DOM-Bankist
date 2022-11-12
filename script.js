@@ -585,3 +585,25 @@ console.log(h1.parentElement.children); // HTMLCollection(4) [h1, h4, button.bt
   if (el !== h1) el.style.transform = 'scale(0.5)';
 }); // decrease of siblings
 */
+
+////////////////////////////////////////////////////////////////////////
+//////////////////////////Lifecycle DOM Events//////////////////////////
+////////////////////////////////////////////////////////////////////////
+
+// DOM content loaded
+//
+document.addEventListener('DOMContentLoaded', function (e) {
+  console.log('HTML pasred and DOM treee built!', e);
+});
+
+// When the complete page has finished loading is when this event gets fired
+window.addEventListener('load', function (e) {
+  console.log('Page fully loaded', e);
+});
+
+// This event is created immediately before a user is about to leave a page
+// window.addEventListener('beforeunload', function (e) {
+//   e.preventDefault(); // Some browsers require it, but Chrome - not
+//   console.log(e);
+//   e.returnValue = ''; //we to set the return value on the event to an empty string
+// });
