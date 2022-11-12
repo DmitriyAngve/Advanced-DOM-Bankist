@@ -157,7 +157,7 @@ observer.observe(section1); // section1 intersecting root element
 
 // Calculate height dynamically
 const navHeight = nav.getBoundingClientRect().height;
-console.log(navHeight);
+// console.log(navHeight);
 
 // We are going to observe the header element
 const header = document.querySelector('.header');
@@ -178,10 +178,100 @@ const headerObserver = new IntersectionObserver(stickyNav, {
 }); // When 0 % of the header visible, then we want something to happen
 headerObserver.observe(header);
 
-//
+///////////////////////////////////////////////////////////////////
+// Reveal sections
+///////////////////////////////////////////////////////////////////
+// create same observer for all four section
+const allSections = document.querySelectorAll('.section');
 
-//
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+  // console.log(entry);
 
+  // If section target is intersecting
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove('section--hidden');
+  // Unobserve
+  observer.unobserve(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+
+// Loop over this nodeList (forEach does not involve creatinf a new array)
+allSections.forEach(function (section) {
+  sectionObserver.observe(section);
+  // section.classList.add('section--hidden');
+});
+
+///////////////////////////////////////////////////////////////////
+// Lazy loading images
+///////////////////////////////////////////////////////////////////
+// Selecting all images (not all images needs lazy loads, select only those with "data-src")
+const imgTargets = document.querySelectorAll('img[data-src]');
+
+// Create callback function for "imgObserver"
+const loadImg = function (entries, observer) {
+  const [entry] = entries; // only one entry we destructing
+  console.log(entry);
+
+  // Guard clause (clause - пункт)
+  if (!entry.isIntersecting) return;
+
+  // Replace src with data-src
+  entry.target.src = entry.target.dataset.src;
+
+  // Remove blur effect (css style)
+  entry.target.addEventListener('load', function () {
+    entry.target.classList.remove('lazy-img');
+  });
+
+  // Stop observing the images
+  observer.unobserve(entry.target);
+};
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null, // here root set to the entire viewport
+  threshold: 0,
+  rootMargin: '200px', // before any of the images is loaded it should already start loading (doing that we don't see delay in loading)
+});
+
+// Loop over our targets (imgObserver to observe each image)
+imgTargets.forEach(img => imgObserver.observe(img));
+
+///////////////////////////////////////////////////////////////////
+// Slider
+///////////////////////////////////////////////////////////////////
+
+// Start with selections
+const slides = document.querySelectorAll('.slide');
+// Selecting buttons
+const btnLeft = document.querySelector('.slider__btn--left');
+const btnRight = document.querySelector('.slider__btn--right');
+
+// New variable for current slide. "let" - because we update it
+let curSlide = 0;
+
+// Delete this
+const slider = document.querySelector('.slider');
+slider.style.transform = 'scale(0.2) translateX(-800px)';
+slider.style.overflow = 'visible';
+
+// Putting all the slides side-by-side, for it loop and set the style on each of them
+slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
+// first 0%, second 100%, third 200%, fourth 300%
+
+// Going to the next slide
+btnRight.addEventListener('click', function () {
+  curSlide++;
+
+  slides.forEach(
+    (s, i) => (s.style.transform = `translateX(${100 * (i - curSlide)}%)`)
+  );
+}); // (i - curSlide) FIRST: (0 - 1 = -1), second (1-1 = 0) and etc...
+// curSlide = 1: -100%, 0%, 100%, 200%
 //
 
 // Lectures //
